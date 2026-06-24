@@ -1,0 +1,195 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #000;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
+
+.jarvis-screen {
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.cortex-field {
+  width: min(74vmin, 560px);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+}
+
+.jarvis-cortex {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.cortex-ring,
+.cortex-core,
+.cortex-center {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.cortex-ring-outer {
+  width: 92%;
+  height: 92%;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  animation: rotateClockwise 32s linear infinite;
+}
+
+.cortex-ring-middle {
+  width: 72%;
+  height: 72%;
+  border: 2px dotted rgba(255, 255, 255, 0.62);
+  animation: rotateCounter 18s linear infinite;
+}
+
+.cortex-ring-inner {
+  width: 52%;
+  height: 52%;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  animation: rotateClockwise 12s linear infinite;
+}
+
+.cortex-core {
+  width: 42%;
+  height: 42%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.24) 0%,
+    rgba(255, 255, 255, 0.12) 38%,
+    rgba(0, 0, 0, 0.95) 68%
+  );
+  box-shadow:
+    0 0 22px rgba(255, 255, 255, 0.28),
+    inset 0 0 24px rgba(255, 255, 255, 0.08);
+  animation: coreBreath 3.8s ease-in-out infinite;
+}
+
+.cortex-center {
+  width: 24%;
+  height: 24%;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.18);
+}
+
+.jarvis-screen.listening .cortex-ring-middle {
+  border-color: rgba(255, 255, 255, 0.9);
+  animation-duration: 9s;
+}
+
+.jarvis-screen.listening .cortex-core {
+  box-shadow:
+    0 0 32px rgba(255, 255, 255, 0.44),
+    inset 0 0 32px rgba(255, 255, 255, 0.12);
+}
+
+.jarvis-screen.processing .cortex-ring-outer {
+  animation-duration: 14s;
+}
+
+.jarvis-screen.processing .cortex-ring-middle {
+  border-color: rgba(255, 255, 255, 1);
+  animation-duration: 5s;
+}
+
+.jarvis-screen.processing .cortex-ring-inner {
+  animation-duration: 4s;
+}
+
+.jarvis-screen.speaking .cortex-core {
+  animation: speakingPulse 0.7s ease-in-out infinite;
+  box-shadow:
+    0 0 44px rgba(255, 255, 255, 0.58),
+    inset 0 0 42px rgba(255, 255, 255, 0.16);
+}
+
+.jarvis-screen.speaking .cortex-ring-middle {
+  border-color: rgba(255, 255, 255, 1);
+  animation-duration: 3.8s;
+}
+
+@keyframes rotateClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotateCounter {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes coreBreath {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.78;
+  }
+
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+@keyframes speakingPulse {
+  0%,
+  100% {
+    transform: scale(0.94);
+    opacity: 0.78;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.debug-message {
+  position: fixed;
+  left: 24px;
+  right: 24px;
+  bottom: 42px;
+  color: #fff;
+  font-size: 22px;
+  text-align: center;
+  line-height: 1.35;
+  opacity: 0.9;
+}

@@ -1,0 +1,4 @@
+[[permission]]
+identifier = "allow-speak"
+description = "Permite chamar o comando speak do plugin Jarvis Voice."
+commands.allow = ["speak"]

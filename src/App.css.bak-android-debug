@@ -1,0 +1,360 @@
+/*
+  JARVIS - CSS Android-safe.
+
+  Objetivo:
+  - manter tela preta
+  - manter apenas o córtex central
+  - manter estados visuais: standby, listening, processing, speaking, awake
+  - reduzir peso gráfico para Android WebView
+*/
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #000;
+  overflow: hidden;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button {
+  font-family: inherit;
+}
+
+.jarvis-screen {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+/*
+  Fundo leve.
+  Sem partículas animadas gigantes.
+  A WebView do Android não gostou da versão anterior.
+*/
+.jarvis-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.08), transparent 18%),
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.035), transparent 42%),
+    #000;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/*
+  Vinheta leve.
+*/
+.jarvis-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, transparent 0 34%, rgba(0, 0, 0, 0.42) 72%, #000 100%);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cortex-field {
+  position: relative;
+  width: min(76vmin, 620px);
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+}
+
+.jarvis-cortex {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+  outline: none;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+/*
+  Sombra central simplificada.
+*/
+.cortex-shadow {
+  position: absolute;
+  width: 56%;
+  height: 56%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, #000 0 44%, rgba(255, 255, 255, 0.08) 46%, transparent 68%);
+  box-shadow:
+    0 0 42px rgba(255, 255, 255, 0.12),
+    0 0 82px rgba(255, 255, 255, 0.08);
+  z-index: 4;
+}
+
+/*
+  Núcleo escuro.
+*/
+.cortex-black-hole {
+  position: absolute;
+  width: 32%;
+  height: 32%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, #000 0 64%, rgba(255, 255, 255, 0.08) 66%, transparent 74%);
+  box-shadow:
+    inset 0 0 24px rgba(255, 255, 255, 0.04),
+    0 0 18px rgba(0, 0, 0, 0.95);
+  z-index: 7;
+}
+
+/*
+  Núcleo luminoso.
+  Sem filter blur.
+*/
+.cortex-core {
+  position: absolute;
+  width: 46%;
+  height: 46%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, transparent 0 50%, rgba(255, 255, 255, 0.28) 52%, transparent 58%),
+    radial-gradient(circle at center, rgba(255, 255, 255, 0.2), transparent 68%);
+  box-shadow:
+    0 0 22px rgba(255, 255, 255, 0.5),
+    0 0 54px rgba(255, 255, 255, 0.22),
+    inset 0 0 32px rgba(255, 255, 255, 0.08);
+  z-index: 6;
+  animation: coreBreath 4.2s ease-in-out infinite;
+}
+
+/*
+  Anéis leves.
+  A versão anterior usava muitas partículas, filtros e máscaras.
+  Esta usa bordas e gradientes simples.
+*/
+.cortex-ring {
+  position: absolute;
+  border-radius: 50%;
+  background: transparent;
+  z-index: 3;
+}
+
+.cortex-ring::before,
+.cortex-ring::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.cortex-ring-outer {
+  width: 92%;
+  height: 92%;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  box-shadow:
+    0 0 18px rgba(255, 255, 255, 0.12),
+    inset 0 0 18px rgba(255, 255, 255, 0.06);
+  animation: rotateClockwise 34s linear infinite;
+}
+
+.cortex-ring-outer::before {
+  inset: 8%;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+}
+
+.cortex-ring-middle {
+  width: 72%;
+  height: 72%;
+  border: 2px dotted rgba(255, 255, 255, 0.62);
+  box-shadow:
+    0 0 22px rgba(255, 255, 255, 0.2),
+    inset 0 0 18px rgba(255, 255, 255, 0.08);
+  animation: rotateClockwise 16s linear infinite;
+}
+
+.cortex-ring-middle::before {
+  inset: 12%;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+.cortex-ring-middle::after {
+  inset: 22%;
+  border: 1px dotted rgba(255, 255, 255, 0.42);
+  animation: orbitShake 6s ease-in-out infinite;
+}
+
+.cortex-ring-inner {
+  width: 54%;
+  height: 54%;
+  border: 2px dotted rgba(255, 255, 255, 0.52);
+  box-shadow:
+    0 0 18px rgba(255, 255, 255, 0.16),
+    inset 0 0 14px rgba(255, 255, 255, 0.08);
+  animation: rotateCounter 12s linear infinite;
+}
+
+/*
+  Estado acordado / ouvindo.
+*/
+.jarvis-screen.awake .cortex-core,
+.jarvis-screen.listening .cortex-core {
+  box-shadow:
+    0 0 28px rgba(255, 255, 255, 0.62),
+    0 0 76px rgba(255, 255, 255, 0.28),
+    inset 0 0 42px rgba(255, 255, 255, 0.12);
+}
+
+.jarvis-screen.awake .cortex-ring-middle,
+.jarvis-screen.listening .cortex-ring-middle {
+  border-color: rgba(255, 255, 255, 0.86);
+  animation-duration: 9s;
+}
+
+.jarvis-screen.awake .cortex-ring-inner,
+.jarvis-screen.listening .cortex-ring-inner {
+  border-color: rgba(255, 255, 255, 0.74);
+  animation-duration: 7s;
+}
+
+/*
+  Estado processando.
+*/
+.jarvis-screen.processing .cortex-ring-outer {
+  animation-duration: 18s;
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.jarvis-screen.processing .cortex-ring-middle {
+  animation-duration: 5s;
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.jarvis-screen.processing .cortex-ring-inner {
+  animation-duration: 4s;
+  border-color: rgba(255, 255, 255, 0.82);
+}
+
+.jarvis-screen.processing .cortex-core {
+  animation-duration: 1.6s;
+}
+
+/*
+  Estado falando.
+*/
+.jarvis-screen.speaking .cortex-core {
+  animation: speakingPulse 0.62s ease-in-out infinite;
+  box-shadow:
+    0 0 34px rgba(255, 255, 255, 0.78),
+    0 0 94px rgba(255, 255, 255, 0.36),
+    inset 0 0 46px rgba(255, 255, 255, 0.16);
+}
+
+.jarvis-screen.speaking .cortex-ring-middle {
+  animation-duration: 3.8s;
+  border-color: rgba(255, 255, 255, 0.96);
+}
+
+.jarvis-screen.speaking .cortex-ring-inner {
+  animation-duration: 2.9s;
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.jarvis-screen.speaking .cortex-shadow {
+  box-shadow:
+    0 0 52px rgba(255, 255, 255, 0.16),
+    0 0 110px rgba(255, 255, 255, 0.12);
+}
+
+@keyframes rotateClockwise {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotateCounter {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes coreBreath {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.76;
+  }
+
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+@keyframes speakingPulse {
+  0%,
+  100% {
+    transform: scale(0.96);
+    opacity: 0.78;
+  }
+
+  45% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  70% {
+    transform: scale(1.03);
+    opacity: 0.92;
+  }
+}
+
+@keyframes orbitShake {
+  0%,
+  100% {
+    transform: scale(1) rotate(0deg);
+  }
+
+  50% {
+    transform: scale(1.025) rotate(4deg);
+  }
+}
+
+@media (max-width: 720px) {
+  .cortex-field {
+    width: 82vmin;
+  }
+}

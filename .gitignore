@@ -1,0 +1,41 @@
+# Node / Vite
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env
+.env
+.env.*
+
+# Rust / Tauri
+target/
+src-tauri/target/
+
+# Android build outputs
+src-tauri/gen/android/.gradle/
+src-tauri/gen/android/build/
+src-tauri/gen/android/app/build/
+src-tauri/gen/android/local.properties
+src-tauri/gen/android/.idea/
+
+# Plugin build outputs
+tauri-plugin-jarvis-voice/target/
+tauri-plugin-jarvis-voice/android/.gradle/
+tauri-plugin-jarvis-voice/android/build/
+tauri-plugin-jarvis-voice/android/local.properties
+
+# APK / AAB
+*.apk
+*.aab
+
+# OS
+.DS_Store
+Thumbs.db
